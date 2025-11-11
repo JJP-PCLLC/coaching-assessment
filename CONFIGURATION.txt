@@ -1,0 +1,319 @@
+/* 
+ * CONFIGURATION GUIDE
+ * ===================
+ * Copy the values you want to customize from this file into the appropriate
+ * locations in your actual files (indicated by file name and line numbers).
+ */
+
+/* ============================================================================
+   BRANDING & COLORS (styles.css, lines 2-12)
+   ============================================================================ */
+:root {
+    --primary-color: #2c5f8d;        /* Main brand color - used for headers, buttons */
+    --secondary-color: #4a90c6;      /* Secondary brand color - gradients, accents */
+    --accent-color: #f4a261;         /* Highlight color - progress bar, links */
+    --success-color: #52b788;        /* Success messages, next steps section */
+    --warning-color: #e76f51;        /* Warning messages (currently unused) */
+    --text-dark: #2d3748;            /* Main text color */
+    --text-light: #718096;           /* Secondary text, labels */
+}
+
+/* Suggested Color Palettes:
+   
+   Professional Blue:
+   --primary-color: #2c5f8d;
+   --secondary-color: #4a90c6;
+   --accent-color: #f4a261;
+   
+   Modern Purple:
+   --primary-color: #6b46c1;
+   --secondary-color: #9f7aea;
+   --accent-color: #ed8936;
+   
+   Corporate Green:
+   --primary-color: #2f855a;
+   --secondary-color: #48bb78;
+   --accent-color: #ed8936;
+   
+   Warm Professional:
+   --primary-color: #c05621;
+   --secondary-color: #dd6b20;
+   --accent-color: #4299e1;
+*/
+
+/* ============================================================================
+   SCHEDULING LINK (app.js, line ~480)
+   ============================================================================ */
+
+// Replace this URL with your actual scheduling link
+const SCHEDULING_URL = 'https://calendly.com/your-name/coaching-consultation';
+
+// Popular scheduling platforms:
+// - Calendly: https://calendly.com/your-username/event-name
+// - Acuity Scheduling: https://your-business.acuityscheduling.com
+// - Appointment Plus: https://your-site.appointmentplus.com
+// - Cal.com: https://cal.com/your-username/event-name
+
+/* ============================================================================
+   TEXT CUSTOMIZATION (index.html)
+   ============================================================================ */
+
+// Main Title (line 15)
+const MAIN_TITLE = "Coaching Readiness Assessment";
+
+// Subtitle (line 16)
+const SUBTITLE = "Discover if conflict leadership coaching is right for you";
+
+// Welcome Heading (line 23)
+const WELCOME_HEADING = "Welcome!";
+
+// Welcome Paragraph (line 24)
+const WELCOME_TEXT = "This assessment measures three critical dimensions of coaching readiness:";
+
+// Time to Complete (line 32)
+const TIME_TO_COMPLETE = "8-10 minutes";
+
+// What You'll Receive (line 33)
+const WHAT_YOULL_RECEIVE = "A personalized readiness profile with specific recommendations";
+
+// Footer Text (line 142)
+const FOOTER_TEXT = "This assessment is designed to help you evaluate your readiness for coaching. It's a starting point for conversation, not a definitive judgment.";
+
+/* ============================================================================
+   SCORE THRESHOLDS (app.js)
+   ============================================================================ */
+
+// You can adjust these thresholds based on your experience with clients
+const SCORE_THRESHOLDS = {
+    overall: {
+        excellent: 120,    // 120-150 points
+        good: 90,          // 90-119 points
+        moderate: 60,      // 60-89 points
+        alternative: 0     // Below 60 points
+    },
+    dimensions: {
+        high: 40,          // 40-50 points per dimension
+        moderate: 30,      // 30-39 points
+        developing: 20,    // 20-29 points
+        needs_work: 0      // Below 20 points
+    }
+};
+
+/* ============================================================================
+   GOOGLE ANALYTICS (Optional - add to index.html before </head>)
+   ============================================================================ */
+
+// Replace YOUR-GA-ID with your actual Google Analytics ID
+const GA_TRACKING_CODE = `
+<!-- Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=YOUR-GA-ID"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', 'YOUR-GA-ID');
+  
+  // Track assessment completion
+  function trackAssessmentComplete(score) {
+    gtag('event', 'assessment_completed', {
+      'total_score': score,
+      'event_category': 'Assessment',
+      'event_label': 'Completed'
+    });
+  }
+  
+  // Track consultation clicks
+  function trackConsultationClick(scoreLevel) {
+    gtag('event', 'consultation_clicked', {
+      'score_level': scoreLevel,
+      'event_category': 'Conversion',
+      'event_label': 'Schedule Consultation'
+    });
+  }
+</script>
+`;
+
+/* ============================================================================
+   FACEBOOK PIXEL (Optional - add to index.html before </head>)
+   ============================================================================ */
+
+// Replace YOUR-PIXEL-ID with your actual Facebook Pixel ID
+const FB_PIXEL_CODE = `
+<!-- Facebook Pixel Code -->
+<script>
+!function(f,b,e,v,n,t,s)
+{if(f.fbq)return;n=f.fbq=function(){n.callMethod?
+n.callMethod.apply(n,arguments):n.queue.push(arguments)};
+if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';
+n.queue=[];t=b.createElement(e);t.async=!0;
+t.src=v;s=b.getElementsByTagName(e)[0];
+s.parentNode.insertBefore(t,s)}(window, document,'script',
+'https://connect.facebook.net/en_US/fbevents.js');
+fbq('init', 'YOUR-PIXEL-ID');
+fbq('track', 'PageView');
+</script>
+<noscript><img height="1" width="1" style="display:none"
+src="https://www.facebook.com/tr?id=YOUR-PIXEL-ID&ev=PageView&noscript=1"
+/></noscript>
+<!-- End Facebook Pixel Code -->
+`;
+
+/* ============================================================================
+   CUSTOM DOMAIN SETUP
+   ============================================================================ */
+
+// If using a custom domain (e.g., assessment.yoursite.com), you'll need to:
+// 1. Add a CNAME file in your repository root with your domain name
+// 2. Configure DNS at your domain registrar
+
+// CNAME file content (create a file named "CNAME" with no extension):
+// assessment.yourwebsite.com
+
+// DNS Configuration (at your domain registrar):
+// Type: CNAME
+// Host: assessment (or your preferred subdomain)
+// Points to: YOUR-GITHUB-USERNAME.github.io
+// TTL: 3600 (or automatic)
+
+/* ============================================================================
+   EMAIL INTEGRATION (Optional - using EmailJS)
+   ============================================================================ */
+
+// To send results via email:
+// 1. Sign up at emailjs.com (free tier available)
+// 2. Add this script to index.html before </body>:
+
+const EMAILJS_SETUP = `
+<script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/email.min.js"></script>
+<script>
+  (function(){
+    emailjs.init("YOUR_PUBLIC_KEY"); // Get from EmailJS dashboard
+  })();
+</script>
+`;
+
+// 3. Add this function to app.js:
+const EMAIL_RESULTS_FUNCTION = `
+async sendResultsEmail(userEmail) {
+    try {
+        await emailjs.send(
+            "YOUR_SERVICE_ID",     // From EmailJS dashboard
+            "YOUR_TEMPLATE_ID",    // From EmailJS dashboard
+            {
+                to_email: userEmail,
+                total_score: this.scores.total,
+                personal_score: this.scores.personal,
+                professional_score: this.scores.professional,
+                relational_score: this.scores.relational,
+                overall_assessment: this.getOverallAssessment(),
+                results_url: window.location.href
+            }
+        );
+        alert('Results sent to your email!');
+    } catch (error) {
+        console.error('Email send failed:', error);
+        alert('Failed to send email. Please try downloading instead.');
+    }
+}
+`;
+
+/* ============================================================================
+   WEBHOOK INTEGRATION (Optional - for CRM/Marketing Automation)
+   ============================================================================ */
+
+// To send data to your CRM or marketing platform:
+const WEBHOOK_FUNCTION = `
+async submitToWebhook() {
+    const webhookUrl = 'YOUR_WEBHOOK_URL'; // From Zapier, Make, or your CRM
+    
+    const data = {
+        timestamp: new Date().toISOString(),
+        scores: {
+            total: this.scores.total,
+            personal: this.scores.personal,
+            professional: this.scores.professional,
+            relational: this.scores.relational
+        },
+        assessment: this.getOverallAssessment(),
+        // Add any other data you want to capture
+    };
+    
+    try {
+        await fetch(webhookUrl, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(data)
+        });
+    } catch (error) {
+        console.error('Webhook submission failed:', error);
+    }
+}
+`;
+
+// Call this function in showResults() after calculating scores
+
+/* ============================================================================
+   CUSTOMIZATION CHECKLIST
+   ============================================================================ */
+
+/*
+Before deploying, make sure you've:
+
+ESSENTIAL:
+[ ] Updated scheduling link (app.js)
+[ ] Tested on desktop and mobile
+[ ] Verified all questions display correctly
+[ ] Confirmed scoring works as expected
+
+BRANDING (Optional):
+[ ] Changed colors to match your brand
+[ ] Updated welcome text
+[ ] Customized footer text
+[ ] Added your logo (if desired)
+
+ANALYTICS (Optional):
+[ ] Added Google Analytics code
+[ ] Added Facebook Pixel
+[ ] Set up conversion tracking
+
+INTEGRATIONS (Optional):
+[ ] Configured email sending
+[ ] Set up webhook to CRM
+[ ] Connected to marketing automation
+
+ADVANCED (Optional):
+[ ] Set up custom domain
+[ ] Added SSL certificate
+[ ] Configured CDN
+[ ] Set up A/B testing
+*/
+
+/* ============================================================================
+   SUPPORT & RESOURCES
+   ============================================================================ */
+
+/*
+Useful Resources:
+
+GitHub Pages:
+https://docs.github.com/pages
+
+EmailJS:
+https://www.emailjs.com/docs/
+
+Google Analytics:
+https://analytics.google.com/analytics/academy/
+
+Zapier (Webhooks):
+https://zapier.com/apps/webhook/integrations
+
+Color Palette Tools:
+https://coolors.co/
+https://colorhunt.co/
+
+Icon Resources:
+https://fontawesome.com/ (for adding icons)
+https://heroicons.com/
+*/
