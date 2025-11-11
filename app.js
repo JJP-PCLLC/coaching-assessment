@@ -447,7 +447,7 @@ const app = {
 
     scheduleConsultation() {
         // Replace with your actual scheduling link
-        window.open('https://calendly.com/your-scheduling-link', '_blank');
+        window.open('https://calendly.com/jjonespatulli/30-minute-call');
     },
 
     downloadResults() {
