@@ -77,82 +77,105 @@ const assessmentQuestions = {
         {
             id: 'pr1',
             dimension: 'professional',
-            text: 'Which of the following describes your current situation? (Select all that apply - even one is a good reason for coaching)',
+            text: 'My current leadership role or transition: (Select the one that best fits)',
             type: 'checkbox',
             options: [
-                'Recently promoted or anticipating promotion within 6-12 months',
-                'Transitioning to a role with broader scope or influence',
-                'Managing managers for the first time',
-                'Leading through organizational change (merger, restructuring, transformation)',
-                'Taking on increased responsibility without formal authority change',
-                'Moving from technical/specialist role to leadership role',
-                'New to executive or senior leadership level',
-                'None of these apply right now'
+                'Individual contributor or team lead',
+                'First-time manager of people',
+                'Managing managers or leading at mid-level',
+                'Senior leader or executive',
+                'In transition between roles or organizations',
+                'Not currently in formal leadership but lead through influence'
             ],
-            pointsPerOption: 2
+            pointsPerOption: 0
         },
         {
             id: 'pr2',
             dimension: 'professional',
-            text: 'I\'m currently experiencing these challenges: (Select all that apply - even one is enough)',
+            text: 'The primary conflict or challenge I want to address involves: (Select all that apply)',
             type: 'checkbox',
             options: [
-                'Recurring team conflicts that I\'m not sure how to address',
-                'Difficulty navigating complex stakeholder relationships',
-                'Resistance to my initiatives or decisions',
-                'Communication breakdowns across departments or teams',
-                'Avoiding crucial conversations I know I need to have',
-                'Managing competing priorities and resource constraints',
-                'Building credibility in a new leadership role',
-                'I tend to avoid conflict and want to get better at addressing it',
-                'None of these - I\'m being proactive before issues arise'
+                'My own conflict avoidance or discomfort with difficult conversations',
+                'A specific challenging relationship with a colleague, boss, or direct report',
+                'Navigating power dynamics or organizational politics',
+                'My leadership style or approach in tense situations',
+                'Building my confidence in addressing conflicts',
+                'Team dynamics or tensions I\'m responsible for addressing',
+                'Cross-departmental or stakeholder conflicts',
+                'I\'m being proactive - no specific conflict right now'
             ],
-            pointsPerOption: 2
+            pointsPerOption: 0
         },
         {
             id: 'pr3',
             dimension: 'professional',
-            text: 'My organization is experiencing: (Select all that apply - or none if you\'re focused on personal development)',
+            text: 'How widespread is the conflict or tension you\'re experiencing?',
             type: 'checkbox',
             options: [
-                'Significant change or transformation',
-                'Low employee engagement or retention issues',
-                'Silos or interdepartmental tensions',
-                'Unclear decision-making processes',
-                'Power dynamics that impact effectiveness',
-                'Need for more innovative problem-solving approaches',
-                'Leadership gaps at my level',
-                'None of these - my organization is relatively stable'
+                'Primarily about me - my own skills, confidence, or approach to conflict',
+                'One or two specific relationships that need attention',
+                'Team-level issues affecting a group I lead or am part of',
+                'Multiple teams or departments experiencing conflict',
+                'Organization-wide tensions or systemic issues',
+                'No active conflict - I want to build skills proactively'
             ],
-            pointsPerOption: 1
+            pointsPerOption: 2
         },
         {
             id: 'pr4',
             dimension: 'professional',
-            text: 'Even if I\'m currently struggling with conflict, I want to develop skills to handle it better in the future.',
+            text: 'How complex is the organizational context around your challenges?',
             type: 'likert',
-            points: 5
+            points: 3,
+            labels: {
+                1: 'Simple - mostly about my skills',
+                2: 'Somewhat complex',
+                3: 'Moderately complex',
+                4: 'Very complex',
+                5: 'Highly complex - multiple stakeholders/systems'
+            }
         },
         {
             id: 'pr5',
             dimension: 'professional',
-            text: 'There\'s at least one specific situation or relationship where I\'d like to be more effective.',
+            text: 'How many people are directly affected by the conflict or tension?',
             type: 'likert',
-            points: 5
+            points: 3,
+            labels: {
+                1: 'Just me (personal development)',
+                2: '2-3 people',
+                3: '4-10 people (team level)',
+                4: '11-30 people (multiple teams)',
+                5: '30+ people (organizational level)'
+            }
         },
         {
             id: 'pr6',
             dimension: 'professional',
-            text: 'I have a sense of what I want to work on, even if I can\'t articulate it perfectly yet.',
+            text: 'How urgent does this feel to address?',
             type: 'likert',
-            points: 5
+            points: 2,
+            labels: {
+                1: 'Not urgent - building capacity',
+                2: 'Somewhat pressing',
+                3: 'Moderately urgent',
+                4: 'Very urgent',
+                5: 'Crisis level - needs immediate attention'
+            }
         },
         {
             id: 'pr7',
             dimension: 'professional',
-            text: 'I can realistically commit time over the next several months to work on my development (understanding it\'s an investment).',
+            text: 'Do you have the authority to address this conflict directly, or does it require organizational intervention?',
             type: 'likert',
-            points: 5
+            points: 2,
+            labels: {
+                1: 'Full authority - it\'s within my control',
+                2: 'Mostly my authority',
+                3: 'Shared authority',
+                4: 'Limited authority',
+                5: 'Little authority - requires org intervention'
+            }
         }
     ],
     
