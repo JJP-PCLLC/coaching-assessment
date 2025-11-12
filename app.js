@@ -270,7 +270,7 @@ const app = {
         // Animate score bars
         setTimeout(() => {
             document.getElementById('personal-fill').style.width = `${(this.scores.personal / 50) * 100}%`;
-            document.getElementById('professional-fill').style.width = `${(this.scores.professional / 50) * 100}%`;
+            document.getElementById('professional-fill').style.width = `${(this.scores.professional / 30) * 100}%`;
             document.getElementById('relational-fill').style.width = `${(this.scores.relational / 50) * 100}%`;
         }, 100);
         
@@ -280,12 +280,24 @@ const app = {
     },
 
     getOverallAssessment() {
-        if (this.scores.total >= 120) {
-            return 'Excellent Coaching Fit';
-        } else if (this.scores.total >= 90) {
-            return 'Good Coaching Fit';
-        } else if (this.scores.total >= 60) {
-            return 'Moderate Fit - Exploration Recommended';
+        // Focus on personal + relational (100 points possible)
+        const personalRelationalScore = this.scores.personal + this.scores.relational;
+        const professionalScore = this.scores.professional;
+        
+        if (personalRelationalScore >= 80) {
+            if (professionalScore >= 25) {
+                return 'Excellent Fit - Coaching + Intervention';
+            } else {
+                return 'Excellent Coaching Fit';
+            }
+        } else if (personalRelationalScore >= 60) {
+            if (professionalScore >= 25) {
+                return 'Good Fit - Complex Context';
+            } else {
+                return 'Good Coaching Fit';
+            }
+        } else if (personalRelationalScore >= 40) {
+            return 'Moderate Fit - Exploratory Discussion Recommended';
         } else {
             return 'Alternative Approaches Recommended';
         }
@@ -340,16 +352,28 @@ const app = {
     },
 
     getOverallInterpretation() {
-        const score = this.scores.total;
+        const personalRelationalScore = this.scores.personal + this.scores.relational;
+        const professionalScore = this.scores.professional;
         
-        if (score >= 120) {
-            return "You're an ideal candidate for conflict leadership coaching. You have the growth mindset, professional context, and relational values that enable coaching to deliver significant impact. You're likely to fully engage with the process and achieve meaningful, sustainable results.";
-        } else if (score >= 90) {
-            return "You're well-positioned for coaching with some dimensions stronger than others. Review your individual dimension scores to understand where you're most ready and where additional clarity or development might enhance coaching effectiveness.";
-        } else if (score >= 60) {
-            return "Coaching could be valuable, but the timing or fit may not be optimal. You might benefit from exploring what's creating lower scores in specific dimensions. Alternative or preparatory approaches might deliver better value at this stage.";
+        // Primary readiness comes from personal + relational (100 points possible)
+        // Professional indicates complexity/service type (lower weight in overall fit)
+        
+        if (personalRelationalScore >= 80) {
+            if (professionalScore >= 25) {
+                return "You have strong coaching readiness and are dealing with significant organizational complexity. You're an excellent candidate for individual coaching, and your situation may also benefit from organizational interventions (mediation, team facilitation, or strategy consultation). Individual coaching will build your personal conflict leadership capacity while we can discuss intervention options to address the broader organizational dynamics.";
+            } else {
+                return "You're an excellent candidate for individual conflict leadership coaching. You have the openness, aspiration, and values alignment that enable coaching to deliver significant impact. You're likely to fully engage with the process and achieve meaningful, sustainable results in developing your conflict leadership skills.";
+            }
+        } else if (personalRelationalScore >= 60) {
+            if (professionalScore >= 25) {
+                return "You have good coaching readiness and are facing complex organizational challenges. Individual coaching can help you develop conflict leadership skills while addressing your specific context. Your situation's complexity may benefit from exploring organizational intervention options alongside coaching. Together we can design the right combination of support.";
+            } else {
+                return "You're well-positioned for coaching with strong readiness in some areas. Individual coaching will help you develop conflict leadership capacity while working on the dimensions where you have more room for growth. The focused individual context of your challenges is well-suited to coaching work.";
+            }
+        } else if (personalRelationalScore >= 40) {
+            return "Coaching could be valuable, but exploring what's creating hesitation in your personal or relational readiness will be important. You might benefit from starting with an exploratory consultation to discuss whether coaching is the right approach at this time, or whether other development approaches might serve you better right now. Your readiness may grow with time and reflection.";
         } else {
-            return "Based on your current readiness profile, approaches other than intensive coaching might serve you better at this time. This doesn't mean coaching won't be valuable in the future—timing and readiness significantly impact coaching effectiveness.";
+            return "Based on your current readiness profile, approaches other than intensive coaching might serve you better at this time. This doesn't mean coaching won't be valuable in the future—readiness evolves. Consider exploring other development resources, and reassess your coaching readiness in several months as your perspective and situation evolve.";
         }
     },
 
@@ -370,14 +394,15 @@ const app = {
     getProfessionalInterpretation() {
         const score = this.scores.professional;
         
-        if (score >= 40) {
-            return "You're at a critical inflection point in your leadership journey. You face specific, tangible challenges that coaching can address. The timing is right for intensive development work.";
-        } else if (score >= 30) {
-            return "You have good reasons to pursue coaching and face real leadership challenges. Clarifying your specific goals and ensuring you can commit adequate time will enhance coaching effectiveness.";
-        } else if (score >= 20) {
-            return "While you may benefit from coaching, you might get more value by first clarifying your specific development goals or waiting until you face more concrete challenges where coaching can have immediate application.";
+        // Professional score now indicates organizational complexity/scope, not individual readiness
+        if (score >= 25) {
+            return "Your situation involves significant organizational complexity with multiple stakeholders or systemic challenges. You may benefit from a combination of individual coaching and organizational interventions (mediation, team facilitation, or strategy consultation) to address both your leadership development and the broader organizational dynamics. Consider discussing intervention options alongside coaching.";
+        } else if (score >= 15) {
+            return "Your situation has moderate organizational complexity. Individual coaching focused on your conflict leadership skills will likely address your needs effectively, though some situations may benefit from targeted team or stakeholder interventions. We can discuss the right combination of support during your consultation.";
+        } else if (score >= 8) {
+            return "Your focus is primarily on individual skill development with manageable organizational context. Individual coaching is well-suited to help you build your conflict leadership capacity and address the specific challenges you're facing. This is an ideal scenario for focused coaching work.";
         } else {
-            return "The professional context may not yet warrant intensive coaching investment. You might benefit more from other development approaches until you face challenges that require deeper, sustained support.";
+            return "You're in an excellent position for proactive skill development. Individual coaching will help you build conflict leadership capabilities before you face complex challenges, giving you tools and confidence to navigate future situations more effectively.";
         }
     },
 
@@ -414,51 +439,58 @@ const app = {
     },
 
     getNextSteps() {
-        const score = this.scores.total;
+        const personalRelationalScore = this.scores.personal + this.scores.relational;
+        const professionalScore = this.scores.professional;
         
-        if (score >= 120) {
+        if (personalRelationalScore >= 80) {
+            if (professionalScore >= 25) {
+                return [
+                    "Schedule a consultation to discuss both individual coaching and potential organizational interventions (mediation, team facilitation, or strategy support)",
+                    "Prepare for the consultation by mapping out the key stakeholders and organizational dynamics involved in your situation",
+                    "Consider whether addressing your leadership development alone will be sufficient, or if organizational-level intervention would accelerate progress",
+                    "Be prepared to discuss timeline, budget, and decision-making authority for both individual and organizational support"
+                ];
+            } else {
+                return [
+                    "Schedule a complimentary consultation to discuss your coaching goals and design an engagement that fits your context",
+                    "Identify 1-2 specific situations where you'd like to be more effective with conflict",
+                    "Consider your availability for coaching sessions and between-session practice over the next 3-6 months"
+                ];
+            }
+        } else if (personalRelationalScore >= 60) {
+            if (professionalScore >= 25) {
+                return [
+                    "Schedule a consultation to explore how individual coaching and/or organizational intervention could support your situation",
+                    "Reflect on your readiness for the personal development work coaching requires alongside addressing organizational dynamics",
+                    "Come prepared to discuss both your individual growth edges and the broader organizational challenges you're navigating"
+                ];
+            } else {
+                return [
+                    "Schedule a consultation to discuss your readiness profile and explore whether coaching is the right next step",
+                    "Review your dimension scores to identify areas where building additional readiness would be valuable",
+                    "Consider what would make this the optimal time to invest in developing your conflict leadership skills"
+                ];
+            }
+        } else if (personalRelationalScore >= 40) {
             return [
-                "Schedule a complimentary consultation to discuss your assessment results and specific coaching goals",
-                "Prepare for the consultation by identifying 2-3 specific challenges where you'd like to see improvement",
-                "Consider your constraints around timing, budget, and time commitment to ensure coaching fits your current reality"
-            ];
-        } else if (score >= 90) {
-            return [
-                "Schedule a consultation to discuss your readiness profile and determine if coaching is the right next step",
-                "Review your dimension scores to identify areas where additional preparation might be valuable",
-                "Consider what would make this the optimal time to begin intensive coaching work"
-            ];
-        } else if (score >= 60) {
-            return [
-                "Review resources on conflict leadership skills to strengthen your foundation",
-                "Identify one small experiment you could try this week to practice approaching conflict differently",
-                "Consider scheduling an exploratory conversation to discuss alternative development approaches",
-                "Revisit this assessment in 3-6 months as your situation evolves"
+                "Consider scheduling an exploratory conversation to discuss your development goals and explore the best approach",
+                "Reflect on what might be creating hesitation about coaching—is it timing, clarity about goals, or something else?",
+                "Explore resources on conflict leadership to strengthen your foundation and build clarity about what you want to develop",
+                "Revisit this assessment in 3-6 months as your readiness evolves"
             ];
         } else {
             return [
-                "Explore alternative development options that match your current readiness and context",
-                IF Personal + Relational ≥ 80:
-    IF Organizational ≥ 25:
-        → Steps for coaching + intervention (map stakeholders, discuss scope)
-    ELSE:
-        → Steps for individual coaching (schedule, identify situations)
-        
-ELSE IF Personal + Relational ≥ 60:
-    IF Organizational ≥ 25:
-        → Exploratory steps for blended approach
-    ELSE:
-        → Standard consultation steps
-        
-ELSE IF Personal + Relational ≥ 40:
-    → Exploratory conversation, resources, reassess later
-    
-ELSE:
-    → Alternative learning formats, reassess in 6-12 months
+                "Focus on exploring what would increase your openness to conflict leadership development",
+                "Consider other learning formats (workshops, reading, peer discussion) that might feel more accessible right now",
+                "Stay connected to resources and development opportunities",
+                "Reassess your coaching readiness in 6-12 months as your perspective and situation evolve"
+            ];
+        }
+    },
 
     scheduleConsultation() {
         // Replace with your actual scheduling link
-        window.open('https://calendly.com/jjonespatulli/30-minute-call');
+        window.open('https://calendly.com/your-scheduling-link', '_blank');
     },
 
     downloadResults() {
@@ -476,16 +508,16 @@ ELSE:
     },
 
     generateResultsText() {
-        return `COACHING READINESS ASSESSMENT RESULTS
-========================================
+        return `PRODUCTIVE CONFLICT COACHING READINESS ASSESSMENT RESULTS
+================================================================
 
-Overall Score: ${this.scores.total} / 150
+Overall Score: ${this.scores.total} / 130
 Assessment: ${this.getOverallAssessment()}
 
 DIMENSION SCORES:
 -----------------
 Personal Readiness: ${this.scores.personal} / 50
-Professional Readiness: ${this.scores.professional} / 50
+Organizational Context: ${this.scores.professional} / 30
 Relational Readiness: ${this.scores.relational} / 50
 
 INTERPRETATIONS:
@@ -497,7 +529,7 @@ ${this.getOverallInterpretation()}
 Personal Readiness:
 ${this.getPersonalInterpretation()}
 
-Professional Readiness:
+Organizational Context:
 ${this.getProfessionalInterpretation()}
 
 Relational Readiness:
@@ -507,8 +539,13 @@ NEXT STEPS:
 -----------
 ${this.getNextSteps().map((step, i) => `${i + 1}. ${step}`).join('\n')}
 
-This assessment is designed to help you evaluate your readiness for coaching.
-It's a starting point for conversation, not a definitive judgment.
+================================================================
+This assessment is designed to help you evaluate your readiness 
+for coaching. It's a starting point for conversation, not a 
+definitive judgment.
+
+© 2025 Productive Conflict LLC
+https://productiveconflict.us/
 `;
     },
 
