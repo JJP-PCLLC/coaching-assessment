@@ -438,12 +438,23 @@ const app = {
         } else {
             return [
                 "Explore alternative development options that match your current readiness and context",
-                "Focus on strengthening the specific dimension(s) where you scored lower",
-                "Stay connected to resources and learning opportunities",
-                "Reassess your coaching readiness in 6-12 months as your leadership context changes"
-            ];
-        }
-    },
+                IF Personal + Relational ≥ 80:
+    IF Organizational ≥ 25:
+        → Steps for coaching + intervention (map stakeholders, discuss scope)
+    ELSE:
+        → Steps for individual coaching (schedule, identify situations)
+        
+ELSE IF Personal + Relational ≥ 60:
+    IF Organizational ≥ 25:
+        → Exploratory steps for blended approach
+    ELSE:
+        → Standard consultation steps
+        
+ELSE IF Personal + Relational ≥ 40:
+    → Exploratory conversation, resources, reassess later
+    
+ELSE:
+    → Alternative learning formats, reassess in 6-12 months
 
     scheduleConsultation() {
         // Replace with your actual scheduling link
