@@ -8,116 +8,64 @@
 </head>
 <body>
     <div class="container">
-        <!-- Header -->
-        <header class="header">
-    <title>Productive Conflict Coaching Readiness Assessment</title>
-            <p class="subtitle">Discover if conflict leadership coaching is right for you</p>
+        <header>
+            <img src="https://productiveconflict.us/wp-content/uploads/2023/01/PC-Logo-2023-horiz-1-300x107.png" alt="Productive Conflict Logo" class="logo">
+            <h1>Productive Conflict Coaching Readiness Assessment</h1>
+            <p class="subtitle">Discover the right support for your conflict leadership journey</p>
         </header>
 
-        <!-- Welcome Screen -->
         <div id="welcome-screen" class="screen active">
             <div class="welcome-content">
                 <h2>Welcome!</h2>
-                <p>This assessment measures three critical dimensions of coaching readiness:</p>
-                <ul class="dimension-list">
-                    <li><strong>Personal Readiness</strong> - Growth mindset and openness to development</li>
-                    <li><strong>Professional Readiness</strong> - Career stage and current challenges</li>
-                    <li><strong>Relational Readiness</strong> - Commitment to relationships and collaborative problem-solving</li>
+                <p>This assessment will help you understand:</p>
+                <ul>
+                    <li>Your readiness for conflict coaching</li>
+                    <li>The type of support that best fits your current needs</li>
+                    <li>How to approach your conflict leadership development</li>
                 </ul>
-                <div class="info-box">
-                    <p><strong>Time to complete:</strong> 8-10 minutes</p>
-                    <p><strong>What you'll receive:</strong> A personalized readiness profile with specific recommendations</p>
-                </div>
-                <button class="btn btn-primary" onclick="app.startAssessment()">Begin Assessment</button>
+                <p class="note"><strong>Important:</strong> This assessment is designed to be inclusive. If you're struggling with conflict, leadership challenges, or difficult conversations, you're exactly who this is for. There are no "wrong" answers.</p>
+                <p class="time-estimate">⏱️ Estimated time: 8-10 minutes</p>
+                <button id="start-btn" class="btn-primary">Start Assessment</button>
             </div>
         </div>
 
-        <!-- Assessment Screen -->
         <div id="assessment-screen" class="screen">
-            <!-- Progress Bar -->
             <div class="progress-container">
                 <div class="progress-bar">
                     <div id="progress-fill" class="progress-fill"></div>
                 </div>
-                <p class="progress-text"><span id="current-question">1</span> of <span id="total-questions">30</span></p>
+                <p class="progress-text">Question <span id="current-question">1</span> of <span id="total-questions">30</span></p>
             </div>
 
-            <!-- Current Dimension Indicator -->
-            <div class="dimension-indicator">
-                <span id="current-dimension">Personal Readiness</span>
-            </div>
-
-            <!-- Question Container -->
             <div id="question-container" class="question-container">
-                <!-- Questions will be dynamically inserted here -->
+                <!-- Questions will be inserted here -->
             </div>
 
-            <!-- Navigation Buttons -->
-            <div class="nav-buttons">
-                <button class="btn btn-secondary" id="prev-btn" onclick="app.previousQuestion()" disabled>Previous</button>
-                <button class="btn btn-primary" id="next-btn" onclick="app.nextQuestion()" disabled>Next</button>
+            <div class="navigation-buttons">
+                <button id="prev-btn" class="btn-secondary" disabled>Previous</button>
+                <button id="next-btn" class="btn-primary">Next</button>
             </div>
         </div>
 
-        <!-- Results Screen -->
         <div id="results-screen" class="screen">
             <div class="results-content">
-                <h2>Your Coaching Readiness Profile</h2>
-                
-                <!-- Overall Score -->
-                <div class="overall-score">
-                    <div class="score-circle">
-                        <span id="total-score">0</span>
-                        <span class="score-max">/ 150</span>
-                    </div>
-                    <h3 id="overall-assessment">Excellent Coaching Fit</h3>
-                </div>
-
-                <!-- Dimension Scores -->
-                <div class="dimension-scores">
-                    <div class="dimension-score">
-                        <h4>Personal Readiness</h4>
-                        <div class="score-bar">
-                            <div class="score-fill" id="personal-fill"></div>
-                        </div>
-                        <p class="score-value"><span id="personal-score">0</span> / 50</p>
-                    <span class="score-max">/ 130</span>
-                    <div class="dimension-score">
-                        <h4>Professional Readiness</h4>
-                        <div class="score-bar">
-                            <div class="score-fill" id="professional-fill"></div>
-                        </div>
-                        <p class="score-value"><span id="professional-score">0</span> / 50</p>
-                    </div>
-                    <div class="dimension-score">
-                        <h4>Relational Readiness</h4>
-                        <div class="score-bar">
-                            <div class="score-fill" id="relational-fill"></div>
-                        </div>
-                        <p class="score-value"><span id="relational-score">0</span> / 50</p>
-                    </div>
-                </div>
-
-                <!-- Interpretations -->
-                <div id="interpretations" class="interpretations">
-                    <!-- Will be populated dynamically -->
-                </div>
-
-                <!-- Next Steps -->
+                <h2>Your Assessment Results</h2>
+                <div id="results-summary"></div>
+                <div id="recommendation"></div>
                 <div class="next-steps">
                     <h3>Next Steps</h3>
-                    <h4>Organizational Context</h4>
-<p class="score-value"><span id="professional-score">0</span> / 30</p>
-<p class="dimension-subtitle">Career Stage & Challenges</p>
+                    <p>Ready to take action? Visit <a href="https://productiveconflict.us" target="_blank">productiveconflict.us</a> to learn more about our services and schedule a consultation.</p>
+                    <button id="restart-btn" class="btn-secondary">Take Assessment Again</button>
+                </div>
+            </div>
         </div>
 
-        <!-- Footer -->
-        <footer class="footer">
-            <p>This assessment is designed to help you evaluate your readiness for coaching. It's a starting point for conversation, not a definitive judgment.</p>
+        <footer>
+            <p>© 2025 Productive Conflict LLC | <a href="https://productiveconflict.us" target="_blank">productiveconflict.us</a></p>
         </footer>
     </div>
 
     <script src="questions.js"></script>
-    <script src="app.js"></script>
+    <script src="script.js"></script>
 </body>
 </html>
