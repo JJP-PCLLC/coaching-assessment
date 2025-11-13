@@ -77,7 +77,7 @@ const assessmentQuestions = {
         {
             id: 'pr1',
             dimension: 'professional',
-            text: 'My current leadership role or transition: (Select the one that best fits)',
+            text: 'My current leadership role: (Select the one that best fits)',
             type: 'checkbox',
             options: [
                 'Individual contributor or team lead',
@@ -109,10 +109,10 @@ const assessmentQuestions = {
         {
             id: 'pr3',
             dimension: 'professional',
-            text: 'How widespread is the conflict or tension you\'re experiencing?',
+            text: 'What level of conflict or tension are you experiencing?',
             type: 'checkbox',
             options: [
-                'Primarily about me - my own skills, confidence, or approach to conflict',
+                'Experiencing the limits of own skills, confidence, or approach to conflict',
                 'One or two specific relationships that need attention',
                 'Team-level issues affecting a group I lead or am part of',
                 'Multiple teams or departments experiencing conflict',
