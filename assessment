@@ -266,7 +266,7 @@ function getSupportTitle(supportType) {
 
 function getSupportDescription(supportType) {
     const descriptions = {
-        coaching: 'Based on your responses, one-on-one coaching focused on developing your personal leadership effectiveness would be most beneficial. This approach will help you build confidence and skills to navigate the challenges you\'re facing.',
+        coaching: 'Based on your responses, one-on-one coaching focused on developing your personal leadership effectiveness would be most beneficial. This approach will help you develop skill and strategy to navigate the challenges you\'re facing.',
         intervention: 'Your situation suggests that team-level intervention or facilitation would be most effective. This may include mediation, group facilitation, or structured team development to address the dynamics at play.',
         strategy: 'Your responses indicate complex organizational challenges that would benefit from strategic consultation. This approach addresses systemic patterns and helps develop comprehensive strategies for organizational conflict transformation.'
     };
@@ -282,7 +282,7 @@ function getReadinessLabel(score) {
 
 function getPersonalReadinessDescription(score) {
     if (score >= 4.0) {
-        return 'You\'re experiencing challenges that are creating real growth opportunities. Your awareness that you need support is actually a strength. Coaching can provide you with practical frameworks and confidence to navigate these difficulties effectively.';
+        return 'You\'re experiencing challenges that are creating real growth opportunities. Coaching can provide you with practical frameworks and skills to navigate these difficulties effectively.';
     } else if (score >= 3.0) {
         return 'You show strong self-awareness and recognition that growth is possible even when things are challenging. Your openness to feedback and willingness to examine your own role makes you an excellent candidate for coaching.';
     } else if (score >= 2.0) {
@@ -297,7 +297,7 @@ function getRelationalReadinessDescription(score) {
     } else if (score >= 3.0) {
         return 'You value relationships and want to improve how you work with others. Your commitment to collaboration, even when it\'s difficult, makes you well-suited for coaching that focuses on relational leadership skills.';
     } else if (score >= 2.0) {
-        return 'Relationships are important to you, and you\'re already working to foster collaboration. Coaching will help you deepen your relational intelligence and become even more effective at bringing people together.';
+        return 'Coaching will help you deepen your relational intelligence and become even more effective at bringing people together.';
     }
     return 'You have a strong relational orientation and see relationships as central to your leadership. Coaching will help you leverage this strength while developing more sophisticated approaches to complex interpersonal dynamics.';
 }
