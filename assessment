@@ -1,0 +1,396 @@
+// Productive Conflict Coaching Readiness Assessment - Main Logic
+
+let currentQuestion = 0;
+let answers = {};
+let startTime;
+
+// Initialize assessment
+function startAssessment() {
+    startTime = new Date();
+    currentQuestion = 0;
+    answers = {};
+    
+    document.getElementById('welcome-screen').classList.remove('active');
+    document.getElementById('question-screen').classList.add('active');
+    document.getElementById('total-questions').textContent = questions.length;
+    
+    showQuestion();
+}
+
+// Display current question
+function showQuestion() {
+    const question = questions[currentQuestion];
+    const progress = ((currentQuestion + 1) / questions.length) * 100;
+    
+    document.getElementById('progress-fill').style.width = progress + '%';
+    document.getElementById('current-question').textContent = currentQuestion + 1;
+    document.getElementById('question-text').textContent = question.text;
+    
+    const optionsContainer = document.getElementById('options-container');
+    optionsContainer.innerHTML = '';
+    
+    question.options.forEach((option, index) => {
+        const optionDiv = document.createElement('div');
+        optionDiv.className = 'option';
+        optionDiv.textContent = option.text;
+        optionDiv.onclick = () => selectOption(index);
+        
+        if (answers[question.id] === index) {
+            optionDiv.classList.add('selected');
+        }
+        
+        optionsContainer.appendChild(optionDiv);
+    });
+    
+    updateNavigationButtons();
+}
+
+// Handle option selection
+function selectOption(optionIndex) {
+    const question = questions[currentQuestion];
+    answers[question.id] = optionIndex;
+    
+    const options = document.querySelectorAll('.option');
+    options.forEach((opt, idx) => {
+        if (idx === optionIndex) {
+            opt.classList.add('selected');
+        } else {
+            opt.classList.remove('selected');
+        }
+    });
+    
+    updateNavigationButtons();
+}
+
+// Update navigation button states
+function updateNavigationButtons() {
+    const prevBtn = document.getElementById('prev-btn');
+    const nextBtn = document.getElementById('next-btn');
+    
+    prevBtn.disabled = currentQuestion === 0;
+    
+    const question = questions[currentQuestion];
+    const isAnswered = answers[question.id] !== undefined;
+    nextBtn.disabled = !isAnswered;
+    
+    if (currentQuestion === questions.length - 1 && isAnswered) {
+        nextBtn.textContent = 'View Results';
+    } else {
+        nextBtn.textContent = 'Next';
+    }
+}
+
+// Navigate to previous question
+function previousQuestion() {
+    if (currentQuestion > 0) {
+        currentQuestion--;
+        showQuestion();
+    }
+}
+
+// Navigate to next question or show results
+function nextQuestion() {
+    if (currentQuestion < questions.length - 1) {
+        currentQuestion++;
+        showQuestion();
+    } else {
+        showResults();
+    }
+}
+
+// Calculate scores and show results
+function showResults() {
+    const scores = calculateScores();
+    const recommendation = determineRecommendation(scores);
+    
+    document.getElementById('question-screen').classList.remove('active');
+    document.getElementById('results-screen').classList.add('active');
+    
+    displayResults(scores, recommendation);
+}
+
+// Calculate scores for each category
+function calculateScores() {
+    let personalScore = 0;
+    let personalCount = 0;
+    let relationalScore = 0;
+    let relationalCount = 0;
+    let professionalScore = 0;
+    let professionalCount = 0;
+    let professionalSignals = {
+        coaching: 0,
+        intervention: 0,
+        strategy: 0
+    };
+    
+    questions.forEach(question => {
+        const answerIndex = answers[question.id];
+        if (answerIndex === undefined) return;
+        
+        const option = question.options[answerIndex];
+        const weightedValue = option.value * (option.weight || 1.0);
+        
+        if (question.category === 'personal') {
+            personalScore += weightedValue;
+            personalCount++;
+        } else if (question.category === 'relational') {
+            relationalScore += weightedValue;
+            relationalCount++;
+        } else if (question.category === 'professional') {
+            professionalScore += weightedValue;
+            professionalCount++;
+            
+            // Track signals for professional category
+            if (option.signal) {
+                professionalSignals[option.signal]++;
+            }
+        }
+    });
+    
+    // Calculate readiness score (inverse - higher score means more need for coaching)
+    // Personal and Relational are weighted more heavily
+    const personalAvg = personalCount > 0 ? personalScore / personalCount : 0;
+    const relationalAvg = relationalCount > 0 ? relationalScore / relationalCount : 0;
+    const professionalAvg = professionalCount > 0 ? professionalScore / professionalCount : 0;
+    
+    // Overall coaching readiness (weighted combination)
+    // Higher scores indicate greater need/readiness for support
+    const overallReadiness = (personalAvg * 0.40) + (relationalAvg * 0.40) + (professionalAvg * 0.20);
+    
+    return {
+        personal: {
+            score: personalAvg,
+            raw: personalScore,
+            count: personalCount
+        },
+        relational: {
+            score: relationalAvg,
+            raw: relationalScore,
+            count: relationalCount
+        },
+        professional: {
+            score: professionalAvg,
+            raw: professionalScore,
+            count: professionalCount,
+            signals: professionalSignals
+        },
+        overall: overallReadiness
+    };
+}
+
+// Determine type of support needed
+function determineRecommendation(scores) {
+    const prof = scores.professional;
+    
+    // Determine primary support type based on professional signals
+    let primarySupport = 'coaching';
+    let maxSignal = prof.signals.coaching;
+    
+    if (prof.signals.intervention > maxSignal) {
+        primarySupport = 'intervention';
+        maxSignal = prof.signals.intervention;
+    }
+    if (prof.signals.strategy > maxSignal) {
+        primarySupport = 'strategy';
+        maxSignal = prof.signals.strategy;
+    }
+    
+    // Assess coaching readiness level
+    let readinessLevel = 'high';
+    if (scores.overall >= 4.0) {
+        readinessLevel = 'very-high'; // Struggling significantly - prime for coaching
+    } else if (scores.overall >= 3.0) {
+        readinessLevel = 'high'; // Clear growth areas - excellent candidate
+    } else if (scores.overall >= 2.0) {
+        readinessLevel = 'moderate'; // Some readiness - good candidate
+    } else {
+        readinessLevel = 'established'; // Already strong - continuous improvement
+    }
+    
+    return {
+        primarySupport,
+        readinessLevel,
+        signals: prof.signals
+    };
+}
+
+// Display results on the page
+function displayResults(scores, recommendation) {
+    const resultsContent = document.getElementById('results-content');
+    
+    let html = `
+        <div class="recommendation-box">
+            <h4>Your Recommended Support: ${getSupportTitle(recommendation.primarySupport)}</h4>
+            <p>${getSupportDescription(recommendation.primarySupport)}</p>
+        </div>
+        
+        <div class="result-category">
+            <h4>Personal Readiness</h4>
+            <span class="score-display">${getReadinessLabel(scores.personal.score)}</span>
+            <p>${getPersonalReadinessDescription(scores.personal.score)}</p>
+        </div>
+        
+        <div class="result-category">
+            <h4>Relational Readiness</h4>
+            <span class="score-display">${getReadinessLabel(scores.relational.score)}</span>
+            <p>${getRelationalReadinessDescription(scores.relational.score)}</p>
+        </div>
+        
+        <div class="result-category">
+            <h4>Professional Context</h4>
+            <span class="score-display">${getProfessionalContextLabel(scores.professional.score)}</span>
+            <p>${getProfessionalDescription(scores.professional.score, recommendation.primarySupport)}</p>
+        </div>
+        
+        <div class="result-category">
+            <h4>What This Means for You</h4>
+            <p>${getOverallDescription(recommendation.readinessLevel, recommendation.primarySupport)}</p>
+            <ul style="margin-top: 15px; padding-left: 20px;">
+                ${getNextStepsBullets(recommendation.primarySupport)}
+            </ul>
+        </div>
+    `;
+    
+    resultsContent.innerHTML = html;
+}
+
+// Helper functions for result descriptions
+function getSupportTitle(supportType) {
+    const titles = {
+        coaching: 'Individual Leadership Coaching',
+        intervention: 'Team Intervention & Facilitation',
+        strategy: 'Strategic Organizational Consultation'
+    };
+    return titles[supportType];
+}
+
+function getSupportDescription(supportType) {
+    const descriptions = {
+        coaching: 'Based on your responses, one-on-one coaching focused on developing your personal leadership effectiveness would be most beneficial. This approach will help you build confidence and skills to navigate the challenges you\'re facing.',
+        intervention: 'Your situation suggests that team-level intervention or facilitation would be most effective. This may include mediation, group facilitation, or structured team development to address the dynamics at play.',
+        strategy: 'Your responses indicate complex organizational challenges that would benefit from strategic consultation. This approach addresses systemic patterns and helps develop comprehensive strategies for organizational conflict transformation.'
+    };
+    return descriptions[supportType];
+}
+
+function getReadinessLabel(score) {
+    if (score >= 4.0) return 'Prime Candidate';
+    if (score >= 3.0) return 'Excellent Fit';
+    if (score >= 2.0) return 'Good Candidate';
+    return 'Strong Foundation';
+}
+
+function getPersonalReadinessDescription(score) {
+    if (score >= 4.0) {
+        return 'You\'re experiencing challenges that are creating real growth opportunities. Your awareness that you need support is actually a strength. Coaching can provide you with practical frameworks and confidence to navigate these difficulties effectively.';
+    } else if (score >= 3.0) {
+        return 'You show strong self-awareness and recognition that growth is possible even when things are challenging. Your openness to feedback and willingness to examine your own role makes you an excellent candidate for coaching.';
+    } else if (score >= 2.0) {
+        return 'You have a solid growth mindset and are already reflective about your leadership. Coaching will help you refine your existing strengths and develop new capabilities to handle increasingly complex situations.';
+    }
+    return 'You demonstrate strong growth mindset characteristics and self-awareness. Coaching will support your continued development and help you stay sharp as you face new leadership challenges.';
+}
+
+function getRelationalReadinessDescription(score) {
+    if (score >= 4.0) {
+        return 'You recognize the importance of relationships even while finding them challenging. This awareness is valuable. Coaching will help you develop practical skills to build stronger connections and navigate interpersonal tensions more confidently.';
+    } else if (score >= 3.0) {
+        return 'You value relationships and want to improve how you work with others. Your commitment to collaboration, even when it\'s difficult, makes you well-suited for coaching that focuses on relational leadership skills.';
+    } else if (score >= 2.0) {
+        return 'Relationships are important to you, and you\'re already working to foster collaboration. Coaching will help you deepen your relational intelligence and become even more effective at bringing people together.';
+    }
+    return 'You have a strong relational orientation and see relationships as central to your leadership. Coaching will help you leverage this strength while developing more sophisticated approaches to complex interpersonal dynamics.';
+}
+
+function getProfessionalContextLabel(score) {
+    if (score >= 4.0) return 'Complex Situation';
+    if (score >= 3.0) return 'Active Challenges';
+    if (score >= 2.0) return 'Specific Needs';
+    return 'Development Focus';
+}
+
+function getProfessionalDescription(score, supportType) {
+    const baseDescriptions = {
+        coaching: 'Your situation is well-suited for individual coaching. You\'ll benefit from focused work on your personal leadership approach and specific skill development.',
+        intervention: 'Your context suggests that team-level work would be valuable. This might include facilitated conversations, conflict resolution processes, or structured team development.',
+        strategy: 'Your organizational context indicates that strategic consultation would be beneficial to address systemic patterns and develop comprehensive approaches to the challenges you\'re facing.'
+    };
+    
+    return baseDescriptions[supportType];
+}
+
+function getOverallDescription(readinessLevel, supportType) {
+    const needsEmphasis = readinessLevel === 'very-high' || readinessLevel === 'high';
+    
+    let base = '';
+    if (needsEmphasis) {
+        base = '<strong>You are an ideal candidate for support.</strong> The challenges you\'re experiencing are exactly what coaching (or intervention/consultation) is designed to address. Seeking help is a sign of leadership strength, not weakness. ';
+    } else {
+        base = '<strong>You\'re well-positioned to benefit from professional support.</strong> Your self-awareness and commitment to growth will make our work together highly productive. ';
+    }
+    
+    const supportAddition = {
+        coaching: 'Individual coaching will provide you with personalized strategies, frameworks, and practice to build your confidence and effectiveness.',
+        intervention: 'Team intervention will create space for honest dialogue, help resolve tensions, and establish stronger patterns of collaboration.',
+        strategy: 'Strategic consultation will help you develop systemic approaches to transform organizational conflict patterns and build sustainable solutions.'
+    };
+    
+    return base + supportAddition[supportType];
+}
+
+function getNextStepsBullets(supportType) {
+    const steps = {
+        coaching: `
+            <li><strong>Schedule a consultation</strong> to discuss your specific goals and how coaching can support you</li>
+            <li><strong>Explore coaching packages</strong> that match your timeline and development needs</li>
+            <li><strong>Prepare for success</strong> by thinking about 2-3 specific situations you want to navigate more effectively</li>
+        `,
+        intervention: `
+            <li><strong>Schedule a consultation</strong> to discuss your team dynamics and intervention options</li>
+            <li><strong>Consider team assessment</strong> to better understand the patterns at play</li>
+            <li><strong>Explore intervention approaches</strong> including mediation, facilitation, and structured team development</li>
+        `,
+        strategy: `
+            <li><strong>Schedule a strategic consultation</strong> to map out your organizational challenges</li>
+            <li><strong>Consider organizational assessment</strong> to identify systemic patterns</li>
+            <li><strong>Explore comprehensive solutions</strong> that may include coaching, training, and process design</li>
+        `
+    };
+    
+    return steps[supportType];
+}
+
+// Restart assessment
+function restartAssessment() {
+    currentQuestion = 0;
+    answers = {};
+    
+    document.getElementById('results-screen').classList.remove('active');
+    document.getElementById('welcome-screen').classList.add('active');
+    
+    // Scroll to top
+    window.scrollTo(0, 0);
+}
+
+// Initialize on page load
+document.addEventListener('DOMContentLoaded', function() {
+    // Set up initial state
+    document.getElementById('welcome-screen').classList.add('active');
+    
+    // Add keyboard navigation
+    document.addEventListener('keydown', function(e) {
+        if (document.getElementById('question-screen').classList.contains('active')) {
+            if (e.key === 'ArrowRight' || e.key === 'Enter') {
+                const nextBtn = document.getElementById('next-btn');
+                if (!nextBtn.disabled) {
+                    nextQuestion();
+                }
+            } else if (e.key === 'ArrowLeft') {
+                const prevBtn = document.getElementById('prev-btn');
+                if (!prevBtn.disabled) {
+                    previousQuestion();
+                }
+            }
+        }
+    });
+});
