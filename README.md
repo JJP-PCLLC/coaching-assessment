@@ -1,26 +1,26 @@
-# coaching-assessment
-Coaching readiness assessment for prospective clients
-[README.md](https://github.com/user-attachments/files/23485717/README.md)
-# Coaching Readiness Assessment
+# Productive Conflict Coaching Readiness Assessment
 
-A professional, interactive web application for assessing client readiness for conflict leadership coaching. This assessment measures three critical dimensions: Personal Readiness (growth mindset), Professional Readiness (career challenges), and Relational Readiness (collaborative values).
+A comprehensive online assessment tool to help prospective clients determine their readiness for conflict coaching and identify the most appropriate support services.
+
+## Overview
+
+This assessment measures three key dimensions:
+- **Personal Readiness** (40% weight): Growth mindset and openness to learning
+- **Relational Readiness** (40% weight): Relationship focus and collaborative problem-solving
+- **Organizational Context** (20% weight): Complexity of current situation and type of support needed
+
+The assessment is designed to be **inclusive** and recognizes that people who are struggling with conflict are ideal candidates for coaching.
 
 ## Features
 
-- **Interactive Assessment Flow**: 30 carefully designed questions across three dimensions
-- **Real-time Progress Tracking**: Visual progress bar and dimension indicators
-- **Intelligent Scoring**: Automated calculation with nuanced interpretations
-- **Responsive Design**: Works beautifully on desktop, tablet, and mobile devices
-- **Save Progress**: Automatically saves answers to localStorage
-- **Personalized Results**: Detailed interpretations for each dimension and overall readiness
-- **Actionable Next Steps**: Customized recommendations based on score ranges
-- **Download Results**: Export results as a text file
+- 30 carefully crafted questions across three categories
+- Responsive design that works on desktop, tablet, and mobile
+- Progress tracking throughout the assessment
+- Personalized results with specific service recommendations
+- Identifies whether users need: Individual Coaching, Intervention Services, or Strategy Consultation
+- Professional, branded design with Productive Conflict branding
 
 
-## Version History
+## License
 
-- v1.0 (2025-01-06): Initial release
-  - 30 questions across 3 dimensions
-  - Responsive design
-  - Progress saving
-  - Results download
+© 2025 Productive Conflict LLC. All rights reserved.
